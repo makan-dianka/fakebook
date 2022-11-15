@@ -1,1 +1,4 @@
-webapp/.venv
+web/.venv
+web/web/__pycache__
+web/app/__pycache__
+web/app/migrations/__pycache__
