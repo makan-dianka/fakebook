@@ -13,7 +13,8 @@ body{
 }
 
 .form-box p{
-    margin-top: 20px;
+    margin-top: 30px;
+    margin-bottom: 30px;
     text-align: center;
 }
 
@@ -43,6 +44,14 @@ body{
     padding: 12px;
 }
 
+.separator{
+    display: none;
+}
+
+.mx{
+    margin-bottom: 30px;
+}
+
 
 @media (max-width: 860px) {
     .box-f h2{
@@ -69,6 +78,10 @@ body{
 
     .media-q p a{
         text-decoration: none;
+    }
+
+    .mx{
+        display: none;
     }
 
 
