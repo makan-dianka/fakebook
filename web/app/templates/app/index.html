@@ -10,15 +10,29 @@
         </div>
 
         <div class="col-md-6 box-content">
-            <form method="POST" action="" class="form-box media-q"> {% csrf_token %}
-                <input type="text" name="username" class="form-control input-lg" placeholder="Adresse e-mail ou numéro de tél."> <br />
-                <input type="password" name="password" class="form-control input-lg" placeholder="Mot de passe"> <br />
-                <button type="button" class="btn btn-primary btn-lg d-grid gap-2 col-12">Se connecter</button>
+            {% if limited %}
 
-                <p><a href="#">Mot de passe oublié ?</a></p> <hr class="mx">
-                <div class="separator"> ou </div>
-                <button type="button" class="btn btn-color d-grid gap-2 col-8 mx-auto btn-lg">Créer nouveau compte</button> <br />
-            </form>
+                <div class="no-trust">
+                    <h5>Trop des tentatifs. Votre compte est temporairement bloqué.</h5>
+                    <p>Réessayer dans 1 heures</p>
+                </div>
+
+            {% else %}
+                <form method="POST" action="" class="form-box media-q"> {% csrf_token %}
+                    <input type="text" name="username" class="form-control input-lg" placeholder="Adresse e-mail ou numéro de tél." required> <br />
+                    <input type="password" name="password" class="form-control input-lg" placeholder="Mot de passe" required> <br />
+                    <button type="submit" class="btn btn-primary btn-lg d-grid gap-2 col-12">Se connecter</button>
+
+                    <p><a href="#">Mot de passe oublié ?</a></p> <hr class="mx">
+                    <div class="separator"> ou </div>
+                    <button type="button" class="btn btn-color d-grid gap-2 col-8 mx-auto btn-lg">Créer nouveau compte</button> <br />
+                </form>
+
+                {% for message in messages %}
+                    <div class="text-danger alert"
+                    ><p>{{ message }}</p></div>
+                {% endfor %}
+            {% endif %}
         </div>
     </div>
 </div>

