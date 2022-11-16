@@ -7,7 +7,11 @@ def index(request):
     if request.method=="POST":
         form = ConnexionForm(request.POST)
         if form.is_valid:
-            form.save()
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+            print(f'username : {username}')
+            print(f'password: {password}')
+            # form.save()
         else:
             messages.error("votre saisi est incorrect")
 
