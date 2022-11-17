@@ -145,3 +145,49 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+
+
+# logger
+if DEBUG==True:
+    LOGGING = {
+        'version': 1,
+        'disable_existing_loggers': True,
+
+        'formatters': {
+            'verbose': {
+                'format': '%(levelname)s %(asctime)s %(module)s %(lineno)s %(message)s',
+            },
+
+            'simple': {
+                'format': '%(levelname)s %(message)s',
+            },
+        },
+
+        'filters': {
+            'require_debug_true': {
+                '()': 'django.utils.log.RequireDebugTrue',
+            },
+        },
+
+        'handlers': {
+            'errors': {
+                'filename' :  os.path.join(BASE_DIR, 'logs/errors.log'),
+                'filters': ['require_debug_true'],
+                'class': 'logging.handlers.RotatingFileHandler',
+                'formatter': 'verbose',
+                'backupCount' : 5,
+                'maxBytes' : 1024*1024*50,
+                'encoding' : 'utf8',
+                'level': 'DEBUG',
+            },
+
+        },
+
+        'loggers': {
+            'errors_log': {
+                'handlers': ['errors'],
+                'level': 'DEBUG',
+                'level': 'INFO',
+            },
+        }
+    }
