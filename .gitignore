@@ -3,3 +3,4 @@ web/web/__pycache__/
 web/app/__pycache__/
 web/app/migrations/__pycache__/
 web/logs/*.log
+secret_keys
