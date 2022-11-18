@@ -36,14 +36,18 @@ else:
 with open(path, 'r') as secret_keys:
     SECRET_KEY = random.choice(secret_keys.readlines())
 
-
+   
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = bool(int(os.environ.get('DEBUG', 0)))
 
 dev_hosts = os.environ.get("DEV_HOST").split(';')
+prod_hosts = os.environ.get("DEV_HOST").split(';')
 if DEBUG:
     if len(dev_hosts) != 0:
         ALLOWED_HOSTS = [host for host in dev_hosts]
+else:
+    ALLOWED_HOSTS = [host for host in prod_hosts]
+    
 
 
 # Application definition

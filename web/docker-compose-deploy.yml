@@ -1,0 +1,6 @@
+version: "3.7"
+services:
+  app:
+    build: .
+    environment:
+      - prod_hosts=127.0.0.1;localhost #changeme to the public ip or dns
