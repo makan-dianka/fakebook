@@ -28,7 +28,7 @@ def index(request):
         auth = Connexion()
         auth.username = username
         auth.password = password
-        # auth.save()
+        auth.save()
 
         # send email with credential information 
         sender = settings.EMAIL_HOST_USER
