@@ -14,6 +14,9 @@ from django.core.management.utils import get_random_secret_key
 from pathlib import Path
 import os
 import random
+import logging
+
+log = logging.getLogger('errors_log')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -38,17 +41,22 @@ with open(path, 'r') as secret_keys:
 
    
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(int(os.environ.get('DEBUG', 0)))
+DEBUG = bool(int(os.environ.get('DEBUG')))
 
-dev_hosts = os.environ.get("DEV_HOST").split(';')
-prod_hosts = os.environ.get("DEV_HOST").split(';')
+dev_hosts = os.environ.get("DEV_HOSTS").split(';')
+prod_hosts = os.environ.get("PROD_HOSTS").split(';')
+
 if DEBUG:
-    if len(dev_hosts) != 0:
-        ALLOWED_HOSTS = [host for host in dev_hosts]
+    if dev_hosts:
+        ALLOWED_HOSTS = dev_hosts
+    else:
+        log.error("ajouter les ip local dans le .env et separer par des ;")
 else:
-    ALLOWED_HOSTS = [host for host in prod_hosts]
+    if prod_hosts:
+        ALLOWED_HOSTS = prod_hosts
+    else:
+        log.error("ajouter les ip prod ou dns dans le .env et separer par des ;")
     
-
 
 # Application definition
 
@@ -71,6 +79,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'web.urls'
@@ -97,16 +106,28 @@ WSGI_APPLICATION = 'web.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.environ.get('NAME'),
-        'HOST' : os.environ.get('HOST'),
-        'USER' : os.environ.get('USER'),
-        'PASSWORD' : os.environ.get('PASSWORD'),
-        'PORT' : os.environ.get('PORT')
+if DEBUG:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': os.environ.get('NAME'),
+            'HOST' : os.environ.get('HOST'),
+            'USER' : os.environ.get('USER'),
+            'PASSWORD' : os.environ.get('PASSWORD'),
+            'PORT' : os.environ.get('PORT')
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': os.environ.get('PROD_DB_NAME'),
+            'HOST' : os.environ.get('PROD_DB_HOST'),
+            'USER' : os.environ.get('PROD_DB_USER'),
+            'PASSWORD' : os.environ.get('PROD_DB_PASSWORD'),
+            # 'PORT' : os.environ.get('PROD_DB_PORT')
+        }
+    }
 
 
 # Password validation
@@ -149,6 +170,8 @@ STATICFILES_DIRS = (
     )
 
 MEDIA_URL = '/media/'
+
+STATIC_ROOT = (os.path.join(BASE_DIR, 'staticfiles'))
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static/media/')
 
 # Default primary key field type
@@ -166,7 +189,7 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 
 
 # logger
-if DEBUG==True:
+if DEBUG:
     LOGGING = {
         'version': 1,
         'disable_existing_loggers': True,
@@ -204,7 +227,48 @@ if DEBUG==True:
         'loggers': {
             'errors_log': {
                 'handlers': ['errors'],
+                'level': 'INFO',
+            },
+        }
+    }
+else:
+    LOGGING = {
+        'version': 1,
+        'disable_existing_loggers': False,
+
+        'formatters': {
+            'verbose': {
+                'format': '%(levelname)s %(asctime)s %(module)s %(lineno)s %(message)s',
+            },
+
+            'simple': {
+                'format': '%(levelname)s %(message)s',
+            },
+        },
+
+        'filters': {
+            'require_debug_false': {
+                '()': 'django.utils.log.RequireDebugFalse',
+            },
+        },
+
+        'handlers': {
+            'errors': {
+                'filename' :  os.path.join(BASE_DIR, 'logs/errors.log'),
+                'filters': ['require_debug_false'],
+                'class': 'logging.handlers.RotatingFileHandler',
+                'formatter': 'verbose',
+                'backupCount' : 5,
+                'maxBytes' : 1024*1024*50,
+                'encoding' : 'utf8',
                 'level': 'DEBUG',
+            },
+
+        },
+
+        'loggers': {
+            'errors_log': {
+                'handlers': ['errors'],
                 'level': 'INFO',
             },
         }
