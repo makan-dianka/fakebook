@@ -28,6 +28,9 @@ set these values
 ### Run docker-compose
 ```docker-compose --env-file ./.env up```
 
+### Create superuser
+```python manage.py createsuperuser```
+
 If you want run this docker-compose in production, please look at docker-compose.yml and make 
 a change if necessary.
 
