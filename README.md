@@ -1,7 +1,7 @@
 # Fake facebook website
 This project is a fake facebook website using docker-compose.
 
-if an error raise using this programme please look at logs/errors.log
+if an error raise using this program please look at logs/errors.log
 ## Requirements 
 - docker
 - docker-compose
