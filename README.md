@@ -30,7 +30,7 @@ set these values
 - ALLOWED_HOSTS="changeme_in_production"
 
 ### Run docker-compose
-```docker-compose --env-file ./.env up```
+```docker-compose --env-file ./web/.env up```
 
 ### Create superuser
 Open new bash then type :
