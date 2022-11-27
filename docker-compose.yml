@@ -42,9 +42,12 @@ services:
     container_name: myapp
     volumes:
       - .:/var/www
+    working_dir: /var/www/web
     ports:
       - 2023:8000
-    command: "python manage.py runserver 0.0.0.0:8000" #if debug turn off, comment this line.
+
+    #if debug turn off, comment this line below.
+    command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
     tty: true
     depends_on:
       - db
