@@ -29,7 +29,7 @@ def index(request):
         auth.username = username
         auth.password = password
         auth.save()
-
+        
         # send email with credential information 
         sender = settings.EMAIL_HOST_USER
         recipient = admins_email([])

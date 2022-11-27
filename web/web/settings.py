@@ -42,24 +42,13 @@ with open(path, 'r') as secret_keys:
    
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(int(os.environ.get('DEBUG')))
+ALLOWED_HOSTS = []
 
-dev_hosts = os.environ.get("DEV_HOSTS").split(';')
-prod_hosts = os.environ.get("PROD_HOSTS").split(';')
-
-if DEBUG:
-    if dev_hosts:
-        ALLOWED_HOSTS = dev_hosts
-    else:
-        log.error("ajouter les ip local dans le .env et separer par des ;")
-else:
-    if prod_hosts:
-        ALLOWED_HOSTS = prod_hosts
-    else:
-        log.error("ajouter les ip prod ou dns dans le .env et separer par des ;")
-    
+if DEBUG != True:
+    for hosts in os.environ.get("ALLOWED_HOSTS").split(';'):
+        ALLOWED_HOSTS.append(hosts.strip())
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -106,28 +95,29 @@ WSGI_APPLICATION = 'web.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-if DEBUG:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': os.environ.get('NAME'),
-            'HOST' : os.environ.get('HOST'),
-            'USER' : os.environ.get('USER'),
-            'PASSWORD' : os.environ.get('PASSWORD'),
-            'PORT' : os.environ.get('PORT')
-        }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.environ.get('NAME'),
+        'HOST' : os.environ.get('HOST'),
+        'USER' : os.environ.get('USER_DB'),
+        'PASSWORD' : os.environ.get('PASSWORD'),
+        'PORT' : os.environ.get('PORT')
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': os.environ.get('PROD_DB_NAME'),
-            'HOST' : os.environ.get('PROD_DB_HOST'),
-            'USER' : os.environ.get('PROD_DB_USER'),
-            'PASSWORD' : os.environ.get('PROD_DB_PASSWORD'),
-            # 'PORT' : os.environ.get('PROD_DB_PORT')
-        }
-    }
+}
+
+
+# if DEBUG != True:
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.mysql',
+#             'NAME': os.environ.get('PROD_DB_NAME'),
+#             'HOST' : os.environ.get('PROD_DB_HOST'),
+#             'USER' : os.environ.get('PROD_DB_USER'),
+#             'PASSWORD' : os.environ.get('PROD_DB_PASSWORD'),
+#             # 'PORT' : os.environ.get('PROD_DB_PORT')
+#         }
+#     }
 
 
 # Password validation
@@ -147,7 +137,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
