@@ -2,6 +2,10 @@
 This project is a fake facebook website using docker-compose.
 
 if an error raise using this program please look at logs/errors.log
+
+----------------
+
+if all is set correctly you'll receive immedialy by email the credential when an user is logged in.
 ## Requirements 
 - docker
 - docker-compose
