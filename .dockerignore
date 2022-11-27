@@ -1,0 +1,6 @@
+web/myapp
+web/staticfiles
+.gitignore
+Dockerfile
+docker-compose.yml
+README.md
