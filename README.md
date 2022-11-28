@@ -42,8 +42,11 @@ Then create database name phising
 
 - ```exit```
 
-### Run docker-compose
-- ```docker-compose --env-file ./web/.env up```
+### Run docker-compose local
+- ```docker-compose up```
+
+### Run docker-compose in production mode
+- ```docker-compose -f docker-compose-prod.yml --env-file ./web/.env up```
 
 ### Create superuser
 Open new bash then type :
