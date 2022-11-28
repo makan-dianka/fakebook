@@ -1,6 +1,6 @@
 #+++++++++++++ DJANGO docker-compose +++++++++++++++++++++++
 #
-# You can use it to local development and production.
+# You can use it to local development.
 # Please read a documentation for this project before begin.
 #
 # Author : Makan DIANKA
@@ -45,23 +45,7 @@ services:
     working_dir: /var/www/web
     ports:
       - 2023:8000
-
-    #if debug turn off, comment this line below.
     command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
     tty: true
     depends_on:
       - db
-    environment:
-      - DEBUG=${DEBUG}
-      - ALLOWED_HOSTS=${ALLOWED_HOSTS}
-
-      # database settings
-      - NAME=${NAME}
-      - HOST=${HOST}
-      - PORT=${PORT}
-      - USER=${USER_DB}
-      - PASSWORD=${PASSWORD}
-
-      # sender mail credential
-      - EMAIL_HOST_USER=${EMAIL_HOST_USER}
-      - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD}
