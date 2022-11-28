@@ -1,0 +1,64 @@
+#+++++++++++++ DJANGO docker-compose +++++++++++++++++++++++
+#
+# You can use it in production.
+# Please read a documentation for this project before begin.
+#
+# Author : Makan DIANKA
+# Email  : python3.230492@gmail.com
+# Website: makandianka.org
+# Chanel : https://www.youtube.com/@pydev5329
+
+
+version: '3'
+services:
+  db:
+    image: mysql:8.0-debian
+    container_name: mysql_db
+    working_dir: /data
+    volumes:
+      - ./database:/data
+    ports:
+      - 2021:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_USER=team
+      - MYSQL_USER_PASSWORD=team
+    command: --default-authentication-plugin=mysql_native_password
+
+  phpmyadmin: 
+    image: phpmyadmin
+    container_name: phpmyadmin
+    working_dir: /phpmyadmin/data
+    volumes:
+      - ./phpmyadmin:/phpmyadmin/data
+    depends_on:
+      - db
+    ports:
+      - 8080:80
+    environment:
+      PMA_HOST: db
+  app:
+    build: .
+    container_name: myapp
+    volumes:
+      - .:/var/www
+    working_dir: /var/www/web
+    ports:
+      - 2023:8000
+    tty: true
+    depends_on:
+      - db
+    environment:
+        # allowed hosts in production
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS}
+
+      # database settings
+      - NAME=${NAME}
+      - HOST=${HOST}
+      - PORT=${PORT}
+      - USER=${USER_DB}
+      - PASSWORD=${PASSWORD}
+
+      # sender mail credential
+      - EMAIL_HOST_USER=${EMAIL_HOST_USER}
+      - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD}
