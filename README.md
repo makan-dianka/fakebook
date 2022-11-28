@@ -27,7 +27,7 @@ set these values
 - USER_DB=root
 - PASSWORD=root
 
-- ALLOWED_HOSTS="changeme_in_production"
+- ALLOWED_HOSTS="changeme_in_production to ip adress or dns"
 
 ### Create database
 - ```docker start mysql_db && docker exec -it mysql_db bash```
