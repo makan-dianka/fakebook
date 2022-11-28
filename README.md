@@ -58,5 +58,6 @@ then
 
 - ```python manage.py createsuperuser```
 
-If you want run this docker-compose in production, please look at docker-compose.yml and make 
-a change if necessary.
+
+
+### You're done !
