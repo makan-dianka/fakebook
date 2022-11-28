@@ -41,7 +41,7 @@ with open(path, 'r') as secret_keys:
 
    
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(int(os.environ.get('DEBUG')))
+DEBUG = bool(int(os.environ.get('DEBUG', 0)))
 ALLOWED_HOSTS = []
 
 if DEBUG != True:
