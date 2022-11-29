@@ -17,7 +17,7 @@ if all is set correctly you'll receive immedialy by email the credential when an
 
 ### Create file .env into web folder where is manage.py
 set these values
-- DEBUG=changeme
+- DEBUG=1
 - EMAIL_HOST_USER="changeme"   here must be a google account. such @gmail.com
 - EMAIL_HOST_PASSWORD="changeme" 
 
