@@ -63,3 +63,5 @@ then
 ### You're done !
 
 You can visit the website in dev mode > ```localhost:2023``` or ```allowed_hosts:2023``` in prod mode
+
+phpmyadmin > ```localhost:8080```
