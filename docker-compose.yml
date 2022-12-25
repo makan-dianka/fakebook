@@ -13,7 +13,7 @@ version: '3'
 services:
   db:
     image: mysql:8.0-debian
-    container_name: mysql_db
+    container_name: mysql8
     working_dir: /data
     volumes:
       - ./database:/data
@@ -27,7 +27,7 @@ services:
 
   phpmyadmin: 
     image: phpmyadmin
-    container_name: phpmyadmin
+    container_name: phpmyadmin2
     working_dir: /phpmyadmin/data
     volumes:
       - ./phpmyadmin:/phpmyadmin/data
