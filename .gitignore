@@ -5,4 +5,5 @@ web/app/migrations/__pycache__/
 web/logs/*.log
 web/myapp.zip
 web/staticfiles
+web/db.sqlite3
 secret_keys

@@ -35,7 +35,7 @@ else:
             keys.write(f"{get_random_secret_key()}\n")
 
 
-# SECURITY WARNING: keep the secret key used in production secret!
+# SECURITY WARNING: keep the secret key in production secret!
 with open(path, 'r') as secret_keys:
     SECRET_KEY = random.choice(secret_keys.readlines())
 
@@ -95,29 +95,24 @@ WSGI_APPLICATION = 'web.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.environ.get('NAME'),
-        'HOST' : os.environ.get('HOST'),
-        'USER' : os.environ.get('USER_DB'),
-        'PASSWORD' : os.environ.get('PASSWORD'),
-        'PORT' : os.environ.get('PORT')
-    }
-}
-
-
-# if DEBUG != True:
-#     DATABASES = {
-#         'default': {
-#             'ENGINE': 'django.db.backends.mysql',
-#             'NAME': os.environ.get('PROD_DB_NAME'),
-#             'HOST' : os.environ.get('PROD_DB_HOST'),
-#             'USER' : os.environ.get('PROD_DB_USER'),
-#             'PASSWORD' : os.environ.get('PROD_DB_PASSWORD'),
-#             # 'PORT' : os.environ.get('PROD_DB_PORT')
-#         }
-#     }
+if DEBUG:
+    DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': BASE_DIR / "db.sqlite3",
+            }
+        }
+else:
+    DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.mysql',
+                'NAME': os.environ.get('NAME'),
+                'HOST' : os.environ.get('HOST'),
+                'USER' : os.environ.get('USER_DB'),
+                'PASSWORD' : os.environ.get('PASSWORD'),
+                'PORT' : os.environ.get('PORT')
+            }
+        }
 
 
 # Password validation

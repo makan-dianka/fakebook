@@ -13,21 +13,21 @@ version: '3'
 services:
   db:
     image: mysql:8.0-debian
-    container_name: mysql_db
+    container_name: mysql8
     working_dir: /data
     volumes:
       - ./database:/data
     ports:
       - 2021:3306
     environment:
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_USER=team
-      - MYSQL_USER_PASSWORD=team
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_USER_PASSWORD=${MYSQL_USER_PASSWORD}
     command: --default-authentication-plugin=mysql_native_password
 
   phpmyadmin: 
     image: phpmyadmin
-    container_name: phpmyadmin
+    container_name: phpmyadmin2
     working_dir: /phpmyadmin/data
     volumes:
       - ./phpmyadmin:/phpmyadmin/data
@@ -48,6 +48,7 @@ services:
     tty: true
     depends_on:
       - db
+    command: ./entrypoint.sh
     environment:
         # allowed hosts in production
       - ALLOWED_HOSTS=${ALLOWED_HOSTS}
